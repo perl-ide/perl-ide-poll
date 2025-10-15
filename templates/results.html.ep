@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Perl IDE Survey Results <%= $year %></title>
+        <style>
+         body {
+             font-family: Arial, sans-serif;
+             max-width: 1000px;
+             margin: 0 auto;
+             padding: 20px;
+             background-color: #f5f5f5;
+         }
+         .container {
+             background-color: white;
+             padding: 30px;
+             border-radius: 8px;
+             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+         }
+         h1 {
+             color: #333;
+             text-align: center;
+             margin-bottom: 10px;
+         }
+         h2 {
+             color: #007acc;
+             border-bottom: 2px solid #007acc;
+             padding-bottom: 10px;
+             margin-top: 30px;
+         }
+         .stats-summary {
+             background-color: #e8f4f8;
+             padding: 20px;
+             border-radius: 5px;
+             margin-bottom: 30px;
+             text-align: center;
+         }
+         .results-section {
+             margin-bottom: 40px;
+         }
+         .ide-result {
+             display: flex;
+             align-items: center;
+             margin-bottom: 15px;
+             padding: 10px;
+             background-color: #f9f9f9;
+             border-radius: 5px;
+         }
+         .ide-name {
+             min-width: 150px;
+             font-weight: bold;
+             color: #333;
+         }
+         .vote-bar {
+             flex: 1;
+             height: 25px;
+             background-color: #ddd;
+             border-radius: 12px;
+             margin: 0 15px;
+             position: relative;
+             overflow: hidden;
+         }
+         .vote-fill-primary {
+             height: 100%;
+             background: linear-gradient(90deg, #007acc, #4da6d9);
+             border-radius: 12px;
+             transition: width 0.5s ease;
+         }
+         .vote-fill-secondary {
+             height: 100%;
+             background: linear-gradient(90deg, #28a745, #6cbf47);
+             border-radius: 12px;
+             transition: width 0.5s ease;
+         }
+         .vote-count {
+             min-width: 80px;
+             text-align: right;
+             font-weight: bold;
+         }
+         .percentage {
+             font-size: 12px;
+             color: #666;
+         }
+         .survey-results {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+             gap: 20px;
+             margin-top: 30px;
+         }
+         .survey-field {
+             background-color: #f8f9fa;
+             padding: 20px;
+             border-radius: 8px;
+             border-left: 4px solid #007acc;
+         }
+         .survey-field h3 {
+             margin-top: 0;
+             color: #333;
+         }
+         .field-result {
+             margin-bottom: 10px;
+             padding: 8px 12px;
+             background-color: white;
+             border-radius: 4px;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+         }
+         .field-value {
+             font-weight: 500;
+         }
+         .field-count {
+             background-color: #007acc;
+             color: white;
+             padding: 2px 8px;
+             border-radius: 12px;
+             font-size: 12px;
+         }
+         .pie-chart-container {
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             margin: 20px 0;
+         }
+         .pie-chart {
+             width: 150px;
+             height: 150px;
+             border-radius: 50%;
+             position: relative;
+             background: conic-gradient(
+                 #007acc 0deg,
+                 #007acc calc(var(--percentage) * 3.6deg),
+                 #e9ecef calc(var(--percentage) * 3.6deg),
+                 #e9ecef 360deg
+             );
+             display: flex;
+             align-items: center;
+             justify-content: center;
+         }
+         .pie-chart::before {
+             content: '';
+             position: absolute;
+             width: 80px;
+             height: 80px;
+             background: white;
+             border-radius: 50%;
+         }
+         .pie-chart-label {
+             position: relative;
+             z-index: 1;
+             font-weight: bold;
+             color: #333;
+             font-size: 18px;
+         }
+         .pie-legend {
+             margin-left: 20px;
+         }
+         .pie-legend-item {
+             display: flex;
+             align-items: center;
+             margin-bottom: 8px;
+         }
+         .pie-legend-color {
+             width: 16px;
+             height: 16px;
+             border-radius: 2px;
+             margin-right: 8px;
+         }
+         .pie-legend-color.yes {
+             background-color: #007acc;
+         }
+         .pie-legend-color.no {
+             background-color: #e9ecef;
+         }
+         .percentage-display {
+             text-align: center;
+             margin-top: 15px;
+             font-size: 14px;
+             color: #666;
+         }
+         @media (max-width: 768px) {
+             .ide-result {
+                 flex-direction: column;
+                 align-items: stretch;
+             }
+             .ide-name {
+                 margin-bottom: 10px;
+                 text-align: center;
+             }
+             .vote-bar {
+                 margin: 10px 0;
+             }
+             .vote-count {
+                 text-align: center;
+             }
+             .pie-chart-container {
+                 flex-direction: column;
+             }
+             .pie-legend {
+                 margin-left: 0;
+                 margin-top: 15px;
+                 text-align: center;
+             }
+         }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Perl IDE Survey Results <%= $year %></h1>
+            
+            <div class="nav-links">
+                <a href="/">← Back to Survey</a>
+            </div>
+            
+            <div class="stats-summary">
+                <strong>Total Submissions: <%= $total_submissions %></strong>
+                <% if ($total_submissions > 0) { %>
+                    | Survey Period: <%= $year %>
+                <% } %>
+            </div>
+
+            <% if ($total_submissions == 0) { %>
+                <div class="no-data">
+                    <h2>No survey data available yet</h2>
+                    <p>Be the first to participate in this year's survey!</p>
+                </div>
+            <% } else { %>
+                
+                <div class="results-section">
+                    <h2>Primary IDE/Editor Preferences</h2>
+                    <% if (@$primary_ides) { %>
+                        <% my $max_primary = $primary_ides->[0]->{count} || 1; %>
+                        <% for my $result (@$primary_ides) { %>
+                            <div class="ide-result">
+                                <div class="ide-name"><%= $result->{primary_ide} %></div>
+                                <div class="vote-bar">
+                                    <div class="vote-fill-primary" style="width: <%= ($result->{primary_ide_count} / $max_primary) * 100 %>%"></div>
+                                </div>
+                                <div class="vote-count">
+                                    <%= $result->{count} %> 
+                                    <div class="percentage">(<%= sprintf("%.1f", ($result->{primary_ide_count} / $total_submissions) * 100) %>%)</div>
+                                </div>
+                            </div>
+                        <% } %>
+                    <% } else { %>
+                        <p class="no-data">No primary IDE data available</p>
+                    <% } %>
+                </div>
+
+                <div class="results-section">
+                    <h2>Secondary IDE/Editor Preferences</h2>
+                    <% if (@$secondary_ides) { %>
+                        <% my $max_secondary = $secondary_ides->[0]->{count} || 1; %>
+                        <% for my $result (@$secondary_ides) { %>
+                            <div class="ide-result">
+                                <div class="ide-name"><%= $result->{secondary_ide} %></div>
+                                <div class="vote-bar">
+                                    <div class="vote-fill-secondary" style="width: <%= ($result->{secondary_ide_count} / $max_secondary) * 100 %>%"></div>
+                                </div>
+                                <div class="vote-count">
+                                    <%= $result->{count} %> 
+                                    <div class="percentage">(<%= sprintf("%.1f", ($result->{secondary_ide_count} / $total_submissions) * 100) %>%)</div>
+                                </div>
+                            </div>
+                        <% } %>
+                    <% } else { %>
+                        <p class="no-data">No secondary IDE data available</p>
+                    <% } %>
+                </div>
+
+                <% if (%$collated_data) { %>
+                    <h2>Additional Survey Results</h2>
+                    <div class="survey-results">
+                        <% for my $field_key (sort keys %$collated_data) { %>
+                            <% my $field_data = $collated_data->{$field_key}; %>
+                            <% my $field_type = $survey->{$field_key}->{collation_type}; %>
+                            <div class="survey-field">
+                                <h3><%= $survey->{$field_key}->{collation_message} %></h3>
+                                <% if ($field_type eq 'SUMMATION') { %>
+                                    <% for my $item_key (keys %{$field_data}) { %>
+                                        <div class="field-result">
+                                            <span class="field-value">
+                                                <%= $item_key %>
+                                            </span>
+                                            <span class="field-count"><%= $field_data->{$item_key} // 0 %></span>
+                                        </div>
+                                    <% } %>
+                                <% } elsif ($field_type eq 'PERCENTAGE') { %>
+                                    <% for my $item_key (keys %{$field_data}) { %>
+                                        <% my $percentage = $field_data->{$item_key}->{percentage} || 0; %>
+                                        <div class="pie-chart-container">
+                                            <div class="pie-chart" style="--percentage: <%= $percentage %>">
+                                                <div class="pie-chart-label"><%= sprintf("%.1f", $percentage) %>%</div>
+                                            </div>
+                                            <div class="pie-legend">
+                                                <div class="pie-legend-item">
+                                                    <div class="pie-legend-color yes"></div>
+                                                    <span>Yes (<%= sprintf("%.1f", $percentage) %>%)</span>
+                                                </div>
+                                                <div class="pie-legend-item">
+                                                    <div class="pie-legend-color no"></div>
+                                                    <span>No (<%= sprintf("%.1f", 100 - $percentage) %>%)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="percentage-display">
+                                            Based on <%= $field_data->{$item_key}->{total} || 0 %> responses
+                                        </div>
+                                    <% } %>
+                                <% } %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } %>
+            <% } %>
+        </div>
+
+        <script>
+         document.addEventListener('DOMContentLoaded', function() {
+             const progressBars = document.querySelectorAll('.vote-fill-primary, .vote-fill-secondary');
+             progressBars.forEach(bar => {
+                 const width = bar.style.width;
+                 bar.style.width = '0%';
+                 setTimeout(() => {
+                     bar.style.width = width;
+                 }, 100);
+             });
+
+             // Animate pie charts
+             const pieCharts = document.querySelectorAll('.pie-chart');
+             pieCharts.forEach(chart => {
+                 const percentage = chart.style.getPropertyValue('--percentage');
+                 chart.style.setProperty('--percentage', '0');
+                 setTimeout(() => {
+                     chart.style.setProperty('--percentage', percentage);
+                     chart.style.transition = 'background 1s ease-in-out';
+                 }, 300);
+             });
+         });
+        </script>
+    </body>
+</html>

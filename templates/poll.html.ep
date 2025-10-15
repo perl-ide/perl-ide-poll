@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Perl IDE Survey <%= $year %></title>
+        <style>
+         body {
+             font-family: Arial, sans-serif;
+             max-width: 800px;
+             margin: 0 auto;
+             padding: 20px;
+             background-color: #f5f5f5;
+         }
+         .container {
+             background-color: white;
+             padding: 30px;
+             border-radius: 8px;
+             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+         }
+         h1 {
+             color: #333;
+             text-align: center;
+             margin-bottom: 10px;
+         }
+         .theme {
+             text-align: center;
+             color: #666;
+             font-style: italic;
+             margin-bottom: 30px;
+         }
+         .stats {
+             background-color: #e8f4f8;
+             padding: 15px;
+             border-radius: 5px;
+             margin-bottom: 30px;
+             text-align: center;
+         }
+         .form-group {
+             margin-bottom: 25px;
+         }
+         label {
+             display: block;
+             margin-bottom: 8px;
+             font-weight: bold;
+             color: #333;
+         }
+         select, input[type="checkbox"] {
+             margin-bottom: 10px;
+         }
+         select {
+             width: 100%;
+             padding: 10px;
+             border: 1px solid #ddd;
+             border-radius: 4px;
+             font-size: 16px;
+         }
+         input[type="checkbox"] {
+             margin-right: 8px;
+             transform: scale(1.2);
+         }
+         .checkbox-label {
+             font-weight: normal;
+             display: inline;
+         }
+         .dependent-field {
+             margin-left: 20px;
+             margin-top: 15px;
+             padding: 15px;
+             background-color: #f9f9f9;
+             border-left: 3px solid #007acc;
+             border-radius: 4px;
+         }
+         .submit-btn {
+             background-color: #007acc;
+             color: white;
+             padding: 12px 30px;
+             border: none;
+             border-radius: 4px;
+             font-size: 16px;
+             cursor: pointer;
+             display: block;
+             margin: 30px auto 0;
+         }
+         .submit-btn:hover {
+             background-color: #005a9e;
+         }
+         .required {
+             color: #e74c3c;
+         }
+         .note {
+             font-size: 14px;
+             color: #666;
+             margin-top: 5px;
+         }
+        </style>
+    </head>
+    <body>
+        <% my @survey_keys = grep { $_ ne 'theme' } keys(%{$survey}); %>
+        <div class="container">
+            <h1>Perl IDE Survey <%= $year %></h1>
+            
+            <% if ($survey->{theme}) { %>
+                <p class="theme"><%= $survey->{theme} %></p>
+            <% } %>
+
+            <% if (flash 'message') { %>
+                <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+                    <%= flash 'message' %>
+                </div>
+            <% } %>
+
+            <% if (flash 'error') { %>
+                <div style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+                    <%= flash 'error' %>
+                </div>
+            <% } %>
+
+            <form method="POST" action="/" id="poll-form">
+                <!-- Primary IDE Selection -->
+                <div class="form-group">
+                    <label for="primary_ide">What is your primary Perl IDE/Editor? <span class="required">*</span></label>
+                    <select name="primary_ide" id="primary_ide" required>
+                        <option value="">-- Select your primary IDE --</option>
+                        <% for my $ide (@$ides) { %>
+                            <option value="<%= $ide->{id} %>"><%= $ide->{id} %></option>
+                        <% } %>
+                    </select>
+                </div>
+
+                <!-- Secondary IDE Selection -->
+                <div class="form-group">
+                    <label for="secondary_ide">What is your secondary Perl IDE/Editor?</label>
+                    <select name="secondary_ide" id="secondary_ide">
+                        <option value="">-- Select your secondary IDE --</option>
+                        <% for my $ide (@$ides) { %>
+                            <option value="<%= $ide->{id} %>"><%= $ide->{id} %></option>
+                        <% } %>
+                    </select>
+                    <p class="note">If you only use one IDE, please don't make a selection.</p>
+                </div>
+
+                <!-- Dynamic Survey Fields -->
+                <% for my $field_key (sort @survey_keys) { %>
+                    <% my $field = $survey->{$field_key}; %>
+                    
+                    <div class="form-group" <% if ($field->{depends_on}) { %>id="field-<%= $field_key %>" style="display: none;"<% } %>>
+                        <% if ($field->{input_type} eq 'checkbox') { %>
+                            <input type="checkbox" name="<%= $field_key %>" id="<%= $field_key %>" value="1" 
+                                   <% if ($field->{depends_on}) { %>class="dependent-checkbox"<% } %>>
+                            <label for="<%= $field_key %>" class="checkbox-label"><%= $field->{label} %></label>
+                        <% } elsif ($field->{input_type} eq 'select') { %>
+                        <% if ($field->{depends_on}) { %>
+                            <div class="dependent-field">
+                        <% } %>
+                        <label for="<%= $field_key %>"><%= $field->{label} %></label>
+                        <select name="<%= $field_key %>" id="<%= $field_key %>">
+                            <option value="">-- Select an option --</option>
+                            <% for my $value (@{$field->{values}}) { %>
+                                <option value="<%= $value %>"><%= $value %></option>
+                            <% } %>
+                        </select>
+                        <% if ($field->{depends_on}) { %>
+                            </div>
+                        <% } %>
+                <% } %>
+                    </div>
+      <% } %>
+
+      <button type="submit" class="submit-btn">Submit Survey</button>
+      <div class="note" style="text-align: center; padding-top: 6px">
+          Data submitted cannot be used to directly identify you, the survey is entirely anonymous. Data is collected with the hope of
+          helping extension and module developers better understand how Perl developers work, and to cultivate a better understanding of the
+          tools that Perl developers are using.
+      </div>
+            </form>
+        </div>
+
+        <script>
+         // Handle dependent fields
+         document.addEventListener('DOMContentLoaded', function() {
+             <% for my $field_key (@survey_keys) { %>
+                 <% my $field = $survey->{$field_key}; %>
+                 <% if ($field->{depends_on}) { %>
+             const trigger_<%= $field_key %> = document.getElementById('<%= $field->{depends_on} %>');
+             const dependent_<%= $field_key %> = document.getElementById('field-<%= $field_key %>');
+             
+             if (trigger_<%= $field_key %> && dependent_<%= $field_key %>) {
+                 trigger_<%= $field_key %>.addEventListener('change', function() {
+                     if (this.checked) {
+                         dependent_<%= $field_key %>.style.display = 'block';
+                     } else {
+                         dependent_<%= $field_key %>.style.display = 'none';
+                         // Clear the dependent field when hiding
+                         const select = dependent_<%= $field_key %>.querySelector('select');
+                         if (select) select.value = '';
+                     }
+                 });
+             }
+                 <% } %>
+             <% } %>
+
+             // Prevent selecting the same IDE for both primary and secondary
+             const primarySelect = document.getElementById('primary_ide');
+             const secondarySelect = document.getElementById('secondary_ide');
+             
+             function updateSecondaryOptions() {
+                 const primaryValue = primarySelect.value;
+                 const secondaryOptions = secondarySelect.querySelectorAll('option');
+                 
+                 secondaryOptions.forEach(option => {
+                     if (option.value === primaryValue && option.value !== '') {
+                         option.style.color = '#999';
+                         option.textContent = option.textContent.replace(' (same as primary)', '') + ' (same as primary)';
+                     } else {
+                         option.style.color = '';
+                         option.textContent = option.textContent.replace(' (same as primary)', '');
+                     }
+                 });
+             }
+             
+             primarySelect.addEventListener('change', updateSecondaryOptions);
+         });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,55 @@
+Komodo
+EditRocket
+Visual Studio Code
+Sublime Text
+Atom
+Notepad++
+TextMate
+EditPad Pro
+EditPlus
+PSPad
+UltraEdit
+TextPad
+Crimson Editor
+Vim
+Neovim
+Emacs
+Eclipse
+IntelliJ IDEA
+PhpStorm
+Apache NetBeans
+Geany
+gedit
+Kate
+jEdit
+Pluma
+KWrite
+Lite XL
+CodeMirror
+Ace Editor
+GitHub Codespaces
+Gitpod
+AWS Cloud9
+nano
+micro
+Brackets
+Bluefish
+AkelPad
+Eclipse Theia
+VSCodium
+Code-OSS
+Helix
+Onivim2
+Kate
+BBEdit
+EmEditor
+Notepad2
+Crimson Editor
+Eddie
+Hidemaru
+Scite
+Redcar
+SlickEdit
+RJ TextEd
+Araxis Merge
+Other
