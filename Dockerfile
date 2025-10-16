@@ -8,4 +8,4 @@ RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install -y libmojolicious-perl libmojo-sqlite-perl libcpanel-json-xs-perl
 
-CMD ["perl", "bin/perl-ide-poll.pl --listen http://0.0.0.0:3000 daemon"]
+CMD ["perl", "bin/perl-ide-poll.pl", "daemon", "--listen", "http://0.0.0.0:3000"]
