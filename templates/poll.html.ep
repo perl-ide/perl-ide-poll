@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Perl IDE Survey <%= $year %></title>
+        <title>Perl IDE Developer Survey <%= $year %></title>
         <style>
          body {
              font-family: Arial, sans-serif;
@@ -98,7 +98,10 @@
     <body>
         <% my @survey_keys = grep { $_ ne 'theme' } keys(%{$survey}); %>
         <div class="container">
-            <h1>Perl IDE Survey <%= $year %></h1>
+            <div style="text-align: center">
+                <img style="width: 100px; height: 100px" src="/camel.svg">
+                <h1>Perl IDE Developer Survey <%= $year %></h1>
+            </div>
             
             <% if ($survey->{theme}) { %>
                 <p class="theme"><%= $survey->{theme} %></p>
@@ -137,7 +140,7 @@
                             <option value="<%= $ide->{id} %>"><%= $ide->{id} %></option>
                         <% } %>
                     </select>
-                    <p class="note">If you only use one IDE, please don't make a selection.</p>
+                    <p class="note">If you only use one IDE, please don't make a secondary selection.</p>
                 </div>
 
                 <!-- Dynamic Survey Fields -->

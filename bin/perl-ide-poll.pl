@@ -18,6 +18,7 @@ my $sql = Mojo::SQLite->new('sqlite:perl-ide-poll.db');
 my $db  = $sql->db;
 
 push @{app->renderer->paths}, ("$Bin/../templates");
+push @{app->static->paths}, ("$Bin/../public");
 PerlIDE::Migrate::migrate($sql, app->log);
 
 sub _is_poll_active {
@@ -163,6 +164,19 @@ get '/success' => sub {
   my $year = localtime->year;
   return $c->render(
     template => 'success',
+    year => $year
+  );
+};
+
+get '/results' => sub {
+  my ($c) = @_;
+
+  my $year = localtime->year;
+  my %surveys = PerlIDE::Survey::years;
+  return $c->render(
+    template => 'results_index',
+    surveys => \%surveys,
+    current_year_is_active => _is_poll_active(),
     year => $year
   );
 };
