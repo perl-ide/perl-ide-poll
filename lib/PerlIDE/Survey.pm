@@ -46,7 +46,7 @@ my %years = (
       values => ['Devel::NYTProf', 'Devel::DProf', 'p5-spy', 'Devel::SmallProf', 'Devel::StatProfiler', 'Other']
     },
     cpan_client => {
-      label => 'This year, which of the following CPAN clients have you used?',
+      label => 'This year, which of the following CPAN clients did you use the most?',
       input_type => 'select',
       collation_message => 'Types of CPAN clients that submitters use',
       collation_type => 'SUMMATION',
