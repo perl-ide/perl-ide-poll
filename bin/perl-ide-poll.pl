@@ -46,6 +46,10 @@ get '/' => sub {
     return $c->redirect_to('/results/' . $year - 1);
   }
 
+  if ($c->session->{"$year"}) {
+    return $c->redirect_to('/success');
+  }
+
   my $total_submissions = PerlIDE::Results::get_total_submissions_for_year($db, $year);
   my $survey = PerlIDE::Survey::years($year);
   my $ides   = $db->query('SELECT id FROM ides ORDER BY id')->hashes->to_array;
