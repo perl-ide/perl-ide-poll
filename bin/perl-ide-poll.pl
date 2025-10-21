@@ -9,6 +9,7 @@ use PerlIDE::Migrate;
 use PerlIDE::Results;
 use PerlIDE::Survey;
 
+use Carp;
 use Mojo::SQLite;
 use Mojolicious::Lite;
 use Time::Piece;
@@ -20,6 +21,10 @@ my $db  = $sql->db;
 push @{app->renderer->paths}, ("$Bin/../templates");
 push @{app->static->paths}, ("$Bin/../public");
 PerlIDE::Migrate::migrate($sql, app->log);
+
+my $secret = $ENV{PERL_IDE_SECRET};
+Carp::croak("SECRET NOT SET") unless $secret;
+app->secrets([$secret]);
 
 sub _is_poll_active {
   my $now = localtime;
