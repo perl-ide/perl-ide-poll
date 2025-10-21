@@ -59,6 +59,10 @@ post '/' => sub {
   my $now = localtime;
   my $year = $now->year;
 
+  if ($c->session->{"$year"}) {
+    return $c->redirect_to('/success');
+  }
+
   if (!_is_poll_active) {
     $c->flash(message => 'The poll is currently disabled until October.');
     return $c->redirect_to('/');
@@ -122,6 +126,8 @@ post '/' => sub {
     $c->flash(error => 'An error occurred while saving your submission. Please try again.');
     return $c->redirect_to('/');
   }
+
+  $c->session->{"$year"} = 1;
 
   return $c->redirect_to('/success');
 };
