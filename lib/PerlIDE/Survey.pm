@@ -18,7 +18,7 @@ my %years = (
       input_type => 'select',
       collation_message => 'Types of LSP that submitters use',
       collation_type => 'SUMMATION',
-      values => ['Perl Navigator', 'Perl::LanguageServer', 'Other']
+      values => ['Perl Navigator', 'PLS', 'Perl::LanguageServer', 'Other']
     },
     perlcritic => {
       label => 'This year, have you used Perl::Critic (perlcritic)?',
