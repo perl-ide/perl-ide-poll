@@ -52,13 +52,11 @@ SQL
       next if $key eq 'theme' || !$json->{$key};
       my $field = $survey->{$key};
       my $collation_type = $field->{collation_type};
-
       if ($collation_type eq 'SUMMATION') {
         $c->{$key}->{$json->{$key}}++;
       }
       elsif ($collation_type eq 'PERCENTAGE') {
-        my $count = ++$c->{$key}->{$json->{$key}}->{count};
-        $c->{$key}->{$json->{$key}}->{percentage} = sprintf("%.1f", $count / scalar(@submission_data));
+        ++$c->{$key};
       }
     }
   }

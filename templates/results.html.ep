@@ -1,9 +1,12 @@
+<% use List::Util qw(max); %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Perl IDE Survey Results <%= $year %></title>
+        <meta name="description" content="Results for the <%= $year %> Perl IDE Developer survey">
         <style>
          body {
              font-family: Arial, sans-serif;
@@ -207,16 +210,15 @@
     </head>
     <body>
         <div class="container">
-            <h1>Perl IDE Survey Results <%= $year %></h1>
-            
-            <div class="nav-links">
-                <a href="/">← Back to Survey</a>
+            <div style="text-align: center">
+                <img style="width: 100px; height: 100px" src="/camel.svg">
+                <h1>Perl IDE Survey Results <%= $year %></h1>
+                <a style="color: #007acc; margin-top: 3px; margin-bottom: 3px;" href="/results">View past results</a>
             </div>
-            
             <div class="stats-summary">
                 <strong>Total Submissions: <%= $total_submissions %></strong>
                 <% if ($total_submissions > 0) { %>
-                    | Survey Period: <%= $year %>
+                    | Survey Period: October <%= $year %> - January <%= $year + 1 %>
                 <% } %>
             </div>
 
@@ -230,8 +232,9 @@
                 <div class="results-section">
                     <h2>Primary IDE/Editor Preferences</h2>
                     <% if (@$primary_ides) { %>
-                        <% my $max_primary = $primary_ides->[0]->{count} || 1; %>
-                        <% for my $result (@$primary_ides) { %>
+                        <% my @primary_values = map {$_->{primary_ide_count}} @$primary_ides; %>
+                        <% my $max_primary = (max @primary_values) || 1; %>
+                        <% for my $result (sort {$b->{primary_ide_count} <=> $a->{primary_ide_count}} @$primary_ides) { %>
                             <div class="ide-result">
                                 <div class="ide-name"><%= $result->{primary_ide} %></div>
                                 <div class="vote-bar">
@@ -251,18 +254,21 @@
                 <div class="results-section">
                     <h2>Secondary IDE/Editor Preferences</h2>
                     <% if (@$secondary_ides) { %>
-                        <% my $max_secondary = $secondary_ides->[0]->{count} || 1; %>
-                        <% for my $result (@$secondary_ides) { %>
-                            <div class="ide-result">
-                                <div class="ide-name"><%= $result->{secondary_ide} %></div>
-                                <div class="vote-bar">
-                                    <div class="vote-fill-secondary" style="width: <%= ($result->{secondary_ide_count} / $max_secondary) * 100 %>%"></div>
+                        <% my @secondary_values = map {$_->{secondary_ide_count}} @$secondary_ides; %>
+                        <% my $max_secondary = (max @secondary_values) || 1; %>
+                        <% for my $result (sort {$b->{secondary_ide_count} <=> $a->{secondary_ide_count}} @$secondary_ides) { %>
+                            <% if ($result->{secondary_ide}) { %>
+                                <div class="ide-result">
+                                    <div class="ide-name"><%= $result->{secondary_ide} %></div>
+                                    <div class="vote-bar">
+                                        <div class="vote-fill-secondary" style="width: <%= ($result->{secondary_ide_count} / $max_secondary) * 100 %>%"></div>
+                                    </div>
+                                    <div class="vote-count">
+                                        <%= $result->{count} %> 
+                                        <div class="percentage">(<%= sprintf("%.1f", ($result->{secondary_ide_count} / $total_submissions) * 100) %>%)</div>
+                                    </div>
                                 </div>
-                                <div class="vote-count">
-                                    <%= $result->{count} %> 
-                                    <div class="percentage">(<%= sprintf("%.1f", ($result->{secondary_ide_count} / $total_submissions) * 100) %>%)</div>
-                                </div>
-                            </div>
+                            <% } %>
                         <% } %>
                     <% } else { %>
                         <p class="no-data">No secondary IDE data available</p>
@@ -278,7 +284,7 @@
                             <div class="survey-field">
                                 <h3><%= $survey->{$field_key}->{collation_message} %></h3>
                                 <% if ($field_type eq 'SUMMATION') { %>
-                                    <% for my $item_key (keys %{$field_data}) { %>
+                                    <% for my $item_key (sort {$field_data->{$b} <=> $field_data->{$a} } keys %{$field_data}) { %>
                                         <div class="field-result">
                                             <span class="field-value">
                                                 <%= $item_key %>
@@ -287,32 +293,30 @@
                                         </div>
                                     <% } %>
                                 <% } elsif ($field_type eq 'PERCENTAGE') { %>
-                                    <% for my $item_key (keys %{$field_data}) { %>
-                                        <% my $percentage = $field_data->{$item_key}->{percentage} || 0; %>
-                                        <div class="pie-chart-container">
-                                            <div class="pie-chart" style="--percentage: <%= $percentage %>">
-                                                <div class="pie-chart-label"><%= sprintf("%.1f", $percentage) %>%</div>
-                                            </div>
-                                            <div class="pie-legend">
-                                                <div class="pie-legend-item">
-                                                    <div class="pie-legend-color yes"></div>
-                                                    <span>Yes (<%= sprintf("%.1f", $percentage) %>%)</span>
-                                                </div>
-                                                <div class="pie-legend-item">
-                                                    <div class="pie-legend-color no"></div>
-                                                    <span>No (<%= sprintf("%.1f", 100 - $percentage) %>%)</span>
-                                                </div>
-                                            </div>
+                                <% my $percentage_yes = sprintf("%1.f", ($field_data / $total_submissions) * 100); %>
+                                <div class="pie-chart-container">
+                                    <div class="pie-chart" style="--percentage: <%= $percentage_yes %>">
+                                        <div class="pie-chart-label"><%= $percentage_yes %>%</div>
+                                    </div>
+                                    <div class="pie-legend">
+                                        <div class="pie-legend-item">
+                                            <div class="pie-legend-color yes"></div>
+                                            <span>Yes (<%= $percentage_yes %>%)</span>
                                         </div>
-                                        <div class="percentage-display">
-                                            Based on <%= $field_data->{$item_key}->{total} || 0 %> responses
+                                        <div class="pie-legend-item">
+                                            <div class="pie-legend-color no"></div>
+                                            <span>No (<%= 100 - $percentage_yes %>%)</span>
                                         </div>
-                                    <% } %>
-                                <% } %>
-                            </div>
+                                    </div>
+                                </div>
+                                <div class="percentage-display">
+                                    Based on <%= $field_data %> responses
+                                </div>
                         <% } %>
-                    </div>
+                            </div>
                 <% } %>
+                    </div>
+            <% } %>
             <% } %>
         </div>
 
