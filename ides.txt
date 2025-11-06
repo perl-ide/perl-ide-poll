@@ -1,55 +1,53 @@
-Komodo
-EditRocket
-Visual Studio Code
-Sublime Text
+Ace Editor
+AkelPad
+Apache NetBeans
+Araxis Merge
 Atom
-Notepad++
-TextMate
+AWS Cloud9
+BBEdit
+Bluefish
+Brackets
+Code-OSS
+CodeMirror
+Crimson Editor
+Eclipse
+Eclipse Theia
+Eddie
 EditPad Pro
 EditPlus
-PSPad
-UltraEdit
-TextPad
-Crimson Editor
-Vim
-Neovim
+EditRocket
 Emacs
-Eclipse
-IntelliJ IDEA
-PhpStorm
-Apache NetBeans
+EmEditor
 Geany
 gedit
-Kate
-jEdit
-Pluma
-KWrite
-Lite XL
-CodeMirror
-Ace Editor
 GitHub Codespaces
 Gitpod
-AWS Cloud9
-nano
-micro
-Brackets
-Bluefish
-AkelPad
-Eclipse Theia
-VSCodium
-Code-OSS
 Helix
-Onivim2
-Kate
-BBEdit
-EmEditor
-Notepad2
-Crimson Editor
-Eddie
 Hidemaru
-Scite
-Redcar
-SlickEdit
-RJ TextEd
-Araxis Merge
+IntelliJ IDEA
+jEdit
+Kate
+Komodo
+KWrite
+Lite XL
+micro
+nano
+Neovim
+Notepad++
+Notepad2
+Onivim2
 Other
+PhpStorm
+Pluma
+PSPad
+Redcar
+RJ TextEd
+Scite
+SlickEdit
+Sublime Text
+TextMate
+TextPad
+UltraEdit
+Vim
+Visual Studio Code
+VSCodium
