@@ -157,15 +157,12 @@ get '/results/:year' => sub {
     return $c->render(text => 'invalid year', status => 400);
   }
 
-  #if ($year == $curr_year && _is_poll_active) {
-  #  $c->flash(message => q[The poll is still running, please submit a response if you haven't done so already.]);
-  #  return $c->redirect_to('/');
-  #}
+  if ($year == $curr_year && _is_poll_active) {
+    $c->flash(message => q[The poll is still running, please submit a response if you haven't done so already.]);
+    return $c->redirect_to('/');
+  }
 
   my $results = PerlIDE::Results::get_results_for_year($db, $year);
-
-  use DDP;
-  p $results;
 
   return $c->render(
     template => 'results',
