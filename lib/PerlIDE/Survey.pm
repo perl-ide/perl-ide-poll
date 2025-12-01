@@ -35,7 +35,7 @@ my %years = (
     perlimports => {
       label => 'This year, have you used App::perlimports (perlimports)?',
       input_type => 'checkbox',
-      collation_message => 'Percentage of submitters who use Perl::Imports',
+      collation_message => 'Percentage of submitters who use App::perlimports',
       collation_type => 'PERCENTAGE'
     },
     profilers => {
