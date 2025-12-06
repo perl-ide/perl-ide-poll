@@ -218,7 +218,7 @@
             <div class="stats-summary">
                 <strong>Total Submissions: <%= $total_submissions %></strong>
                 <% if ($total_submissions > 0) { %>
-                    | Survey Period: October 1st, <%= $year %> - December 1st, <%= $year + 1 %>
+                    | Survey Period: October 1st, <%= $year %> - December 1st, <%= $year %>
                 <% } %>
             </div>
 

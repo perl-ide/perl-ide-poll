@@ -23,7 +23,7 @@ push @{app->static->paths}, ("$Bin/../public");
 PerlIDE::Migrate::migrate($sql, app->log);
 
 my $secret = $ENV{PERL_IDE_SECRET};
-Carp::croak("SECRET NOT SET") unless $secret;
+Carp::croak("SECRET NOT SET (PERL_IDE_SECRET)") unless $secret;
 app->secrets([$secret]);
 
 sub _is_poll_active {
@@ -38,12 +38,12 @@ get '/' => sub {
 
   my $now = localtime;
   my $mon = $now->mon;
-  my $poll_active = $mon >= 10 && $mon <= 12;
   my $year = $now->year;
 
-  if (!$poll_active) {
+  if (!_is_poll_active) {
     $c->flash(message => 'The poll is currently disabled until October, where it will resume again. Here are the results from last year.');
-    return $c->redirect_to('/results/' . $year - 1);
+    my $last_year = $mon == 12 ? $year : $year + 1;
+    return $c->redirect_to('/results/' . $last_year);
   }
 
   if ($c->session->{"$year"}) {
