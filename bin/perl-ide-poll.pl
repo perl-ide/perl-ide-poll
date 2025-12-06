@@ -186,13 +186,11 @@ get '/success' => sub {
 get '/results' => sub {
   my ($c) = @_;
 
-  my $year = localtime->year;
   my %surveys = PerlIDE::Survey::years;
   return $c->render(
     template => 'results_index',
     surveys => \%surveys,
     current_year_is_active => _is_poll_active(),
-    year => $year
   );
 };
 

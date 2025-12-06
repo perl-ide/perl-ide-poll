@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Perl IDE Survey Results <%= $year %></title>
+        <title>Perl IDE Survey Results</title>
         <style>
          body {
              font-family: Arial, sans-serif;
@@ -220,6 +220,23 @@
                         <% } %>
                     </li>
                 <% } %>
+            </ul>
+            <div>
+                <h2>Legacy Survey Results</h2>
+            </div>
+            <ul>
+                <li>
+                    <a href="https://perlide.org/polls/the-most-important-features-of-an-employer-or-job-opportunity/">May 2010</a>
+                </li>
+                <li>
+                    <a href="https://perlide.org/poll201004/">April 2010</a>
+                </li>
+                <li>
+                    <a href="https://perlide.org/poll200911/">November 2009</a>
+                </li>
+                <li>
+                    <a href="https://perlide.org/poll200910/">October 2009</a>
+                </li>
             </ul>
         </div>
     </body>
