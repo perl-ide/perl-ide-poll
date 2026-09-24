@@ -210,6 +210,7 @@
     </head>
     <body>
         <div class="container">
+            %= include '_flash'
             <div style="text-align: center">
                 <img style="width: 100px; height: 100px" src="/camel.svg">
                 <h1>Perl IDE Survey Results <%= $year %></h1>
@@ -221,14 +222,13 @@
                     | Survey Period: October 1st, <%= $year %> - December 1st, <%= $year %>
                 <% } %>
             </div>
-
             <% if ($total_submissions == 0) { %>
                 <div class="no-data">
                     <h2>No survey data available yet</h2>
                     <p>Be the first to participate in this year's survey!</p>
                 </div>
             <% } else { %>
-                
+
                 <div class="results-section">
                     <h2>Primary IDE/Editor Preferences</h2>
                     <% if (@$primary_ides) { %>
@@ -241,7 +241,7 @@
                                     <div class="vote-fill-primary" style="width: <%= ($result->{primary_ide_count} / $max_primary) * 100 %>%"></div>
                                 </div>
                                 <div class="vote-count">
-                                    <%= $result->{count} %> 
+                                    <%= $result->{count} %>
                                     <div class="percentage">(<%= sprintf("%.1f", ($result->{primary_ide_count} / $total_submissions) * 100) %>%)</div>
                                 </div>
                             </div>
@@ -264,7 +264,7 @@
                                         <div class="vote-fill-secondary" style="width: <%= ($result->{secondary_ide_count} / $max_secondary) * 100 %>%"></div>
                                     </div>
                                     <div class="vote-count">
-                                        <%= $result->{count} %> 
+                                        <%= $result->{count} %>
                                         <div class="percentage">(<%= sprintf("%.1f", ($result->{secondary_ide_count} / $total_submissions) * 100) %>%)</div>
                                     </div>
                                 </div>

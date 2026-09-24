@@ -29,6 +29,7 @@ if (exists $ENV{PERL_IDE_SECRET}) {
 else {
   warn('No PERL_IDE_SECRET provided, use a secret in production.');
 }
+
 app->secrets([$secret]);
 
 sub _is_poll_active {
@@ -193,6 +194,9 @@ get '/results' => sub {
 
   my $year = localtime->year;
   my %surveys = PerlIDE::Survey::years;
+
+  delete %surveys{$year};
+
   return $c->render(
     template => 'results_index',
     surveys => \%surveys,

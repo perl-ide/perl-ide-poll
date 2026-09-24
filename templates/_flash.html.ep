@@ -1,0 +1,5 @@
+% if (flash('message')) {
+<div style="background-color: lightgoldenrodyellow; color: darkgoldenrod; padding: 0.33rem; margin-bottom: 1rem; border: solid 1px darkgoldenrod; border-radius: 5px">
+    <%= flash('message') %>
+</div>
+% }

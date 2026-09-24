@@ -102,7 +102,7 @@
                 <img style="width: 100px; height: 100px" src="/camel.svg">
                 <h1>Perl IDE Developer Survey <%= $year %></h1>
             </div>
-            
+
             <% if ($survey->{theme}) { %>
                 <p class="theme"><%= $survey->{theme} %></p>
             <% } %>
@@ -146,10 +146,10 @@
                 <!-- Dynamic Survey Fields -->
                 <% for my $field_key (sort @survey_keys) { %>
                     <% my $field = $survey->{$field_key}; %>
-                    
+
                     <div class="form-group" <% if ($field->{depends_on}) { %>id="field-<%= $field_key %>" style="display: none;"<% } %>>
                         <% if ($field->{input_type} eq 'checkbox') { %>
-                            <input type="checkbox" name="<%= $field_key %>" id="<%= $field_key %>" value="1" 
+                            <input type="checkbox" name="<%= $field_key %>" id="<%= $field_key %>" value="1"
                                    <% if ($field->{depends_on}) { %>class="dependent-checkbox"<% } %>>
                             <label for="<%= $field_key %>" class="checkbox-label"><%= $field->{label} %></label>
                         <% } elsif ($field->{input_type} eq 'select') { %>
@@ -187,7 +187,7 @@
                  <% if ($field->{depends_on}) { %>
              const trigger_<%= $field_key %> = document.getElementById('<%= $field->{depends_on} %>');
              const dependent_<%= $field_key %> = document.getElementById('field-<%= $field_key %>');
-             
+
              if (trigger_<%= $field_key %> && dependent_<%= $field_key %>) {
                  trigger_<%= $field_key %>.addEventListener('change', function() {
                      if (this.checked) {
@@ -206,11 +206,11 @@
              // Prevent selecting the same IDE for both primary and secondary
              const primarySelect = document.getElementById('primary_ide');
              const secondarySelect = document.getElementById('secondary_ide');
-             
+
              function updateSecondaryOptions() {
                  const primaryValue = primarySelect.value;
                  const secondaryOptions = secondarySelect.querySelectorAll('option');
-                 
+
                  secondaryOptions.forEach(option => {
                      if (option.value === primaryValue && option.value !== '') {
                          option.style.color = '#999';
@@ -221,7 +221,7 @@
                      }
                  });
              }
-             
+
              primarySelect.addEventListener('change', updateSecondaryOptions);
          });
         </script>
